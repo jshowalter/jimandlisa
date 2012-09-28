@@ -1,0 +1,8 @@
+<jaxb:bindings xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="2.0" xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc" jaxb:extensionBindingPrefixes="xjc"> 
+  <jaxb:globalBindings>
+    <xjc:simple/>
+  </jaxb:globalBindings>
+  <jaxb:bindings schemaLocation="InvoiceSchema.xsd" node="/xs:schema/xs:complexType/xs:sequence/xs:element[@name='lineItem']">
+      <jaxb:property name="lineItems"/>
+  </jaxb:bindings> 
+</jaxb:bindings>
