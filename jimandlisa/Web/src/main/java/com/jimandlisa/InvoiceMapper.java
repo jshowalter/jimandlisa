@@ -1,11 +1,14 @@
 package com.jimandlisa;
 
+import java.util.ResourceBundle;
+
 public class InvoiceMapper {
 
 	public int integerFrom(String idString) throws ValidationException,
 			ServiceException {
 		if (idString == null) {
-			throw new ValidationException("idString is null");
+			ResourceBundle bundle = ResourceBundle.getBundle("ExceptionMessage");
+			throw new ValidationException(bundle.getString("NullInvoiceID"));
 		}
 
 		try {
