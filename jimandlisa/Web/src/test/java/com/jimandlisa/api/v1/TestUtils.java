@@ -6,9 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -31,13 +29,12 @@ import com.jimandlisa.api.v1.InvoiceLineItem;
 public class TestUtils {
 
 	public static enum Mode {
-		NONE, 
-		JSON, 
-		XML;
+		NONE, JSON, XML;
 	}
-	
+
 	/***
 	 * Creates API invoice with line items for specified name/value pairs.
+	 * 
 	 * @param invoiceName
 	 * @param lineItemNameValuePairs
 	 * @return
@@ -45,19 +42,20 @@ public class TestUtils {
 	public static Invoice createTestInvoice(String invoiceName, HashMap<String, BigDecimal> lineItemNameValuePairs) {
 		Invoice invoice = new Invoice();
 		invoice.setName(invoiceName);
-		
+
 		for (String name : lineItemNameValuePairs.keySet()) {
 			InvoiceLineItem lineItem = new InvoiceLineItem();
 			lineItem.setName(name);
 			lineItem.setBalance(lineItemNameValuePairs.get(name));
 			invoice.getLineItems().add(lineItem);
 		}
-		
+
 		return invoice;
 	}
-	
+
 	/***
 	 * Generates specified number of line item name/value pairs
+	 * 
 	 * @param numberOfLineItems
 	 * @return
 	 */
@@ -65,9 +63,14 @@ public class TestUtils {
 		HashMap<String, BigDecimal> lineItemNameValuePairs = new HashMap<String, BigDecimal>(numberOfLineItems);
 
 		for (int index = 0; index < numberOfLineItems; index++) {
-			String itemName = String.format("Line Item {0}", index);
-			BigDecimal itemValue = new BigDecimal(String.format("\\u002D{0}.{0}", index));
-			lineItemNameValuePairs.put(itemName, itemValue);
+			String itemName = String.format("Line Item %d", index);
+			try {
+				String value = String.format("\u002D%d.%d", index+1, index+2);
+				BigDecimal itemValue = new BigDecimal(value);
+				lineItemNameValuePairs.put(itemName, itemValue);
+			} catch (Exception x) {
+				System.out.println(x.getMessage());
+			}
 		}
 
 		return lineItemNameValuePairs;
@@ -81,27 +84,28 @@ public class TestUtils {
 	 */
 	public static Invoice generateTestInvoice(int numberOfLineItems) {
 		String invoiceName = "General Invoice";
-		HashMap<String, BigDecimal> lineItemNameValuePairs = generateLineItemNameValuePairs(numberOfLineItems); 
+		HashMap<String, BigDecimal> lineItemNameValuePairs = generateLineItemNameValuePairs(numberOfLineItems);
 		return createTestInvoice(invoiceName, lineItemNameValuePairs);
 	}
 
 	/***
 	 * Gets text body from stream.
+	 * 
 	 * @param inputStream
 	 * @return
 	 */
 	public static String getBody(InputStream inputStream) {
 		String result = "";
-		
+
 		try {
 			BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
 			String inputLine;
-			
+
 			while ((inputLine = in.readLine()) != null) {
 				result += inputLine;
 				result += "\n";
 			}
-			
+
 			in.close();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
