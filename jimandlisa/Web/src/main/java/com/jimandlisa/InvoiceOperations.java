@@ -43,10 +43,10 @@ public class InvoiceOperations {
 	public InvoiceOperations() throws ServiceException {
 		try {
 			EntityManagerFactory entityFactory = Persistence
-					.createEntityManagerFactory("persistInvoice");
+					.createEntityManagerFactory("persistInvoice"); //$NON-NLS-1$
 			manager = entityFactory.createEntityManager();
 		} catch (IllegalStateException x) {
-			throw new ServiceException("Unable to create manager", x);
+			throw new ServiceException(Messages.getString("InvoiceOperations.1"), x); //$NON-NLS-1$
 		}
 	}
 
@@ -76,16 +76,16 @@ public class InvoiceOperations {
 				transaction.commit();
 				wasDeleted = true;
 			} catch (IllegalStateException x) {
-				throw new ServiceException("Unable to delete invoice", x);
+				throw new ServiceException(Messages.getString("InvoiceOperations.2"), x); //$NON-NLS-1$
 			} catch (IllegalArgumentException x) {
 				throw new ServiceException(
-						"Illegal argument when deleting invoice", x);
+						Messages.getString("InvoiceOperations.3"), x); //$NON-NLS-1$
 			} catch (TransactionRequiredException x) {
 				throw new ServiceException(
-						"No transaction when deleting invoice", x);
+						Messages.getString("InvoiceOperations.4"), x); //$NON-NLS-1$
 			} catch (RollbackException x) {
 				throw new ServiceException(
-						"Unable to rollback invoice delete transaction", x);
+						Messages.getString("InvoiceOperations.5"), x); //$NON-NLS-1$
 			}
 		}
 
@@ -113,16 +113,16 @@ public class InvoiceOperations {
 				wasDeleted = true;
 			} catch (IllegalStateException x) {
 				throw new ServiceException(
-						"Unable to delete invoice line item", x);
+						Messages.getString("InvoiceOperations.6"), x); //$NON-NLS-1$
 			} catch (IllegalArgumentException x) {
 				throw new ServiceException(
-						"Illegal argument when deleting invoice line item", x);
+						Messages.getString("InvoiceOperations.7"), x); //$NON-NLS-1$
 			} catch (TransactionRequiredException x) {
 				throw new ServiceException(
-						"No transaction when deleting invoice line item", x);
+						Messages.getString("InvoiceOperations.8"), x); //$NON-NLS-1$
 			} catch (RollbackException x) {
 				throw new ServiceException(
-						"Unable to rollback invoice line item delete transaction",
+						Messages.getString("InvoiceOperations.9"), //$NON-NLS-1$
 						x);
 			}
 		}
@@ -142,7 +142,7 @@ public class InvoiceOperations {
 		try {
 			return manager.find(Invoice.class, invoiceId);
 		} catch (IllegalArgumentException x) {
-			throw new ValidationException("Unable to find invoice", x);
+			throw new ValidationException(Messages.getString("InvoiceOperations.10"), x); //$NON-NLS-1$
 		}
 	}
 
@@ -157,7 +157,7 @@ public class InvoiceOperations {
 		try {
 			return manager.find(InvoiceLineItem.class, lineItemId);
 		} catch (IllegalArgumentException x) {
-			throw new ValidationException("unable to find invoice", x);
+			throw new ValidationException(Messages.getString("InvoiceOperations.10"), x); //$NON-NLS-1$
 		}
 	}
 
@@ -180,15 +180,15 @@ public class InvoiceOperations {
 			transaction.commit();
 			return mergedInvoice;
 		} catch (IllegalStateException x) {
-			throw new ServiceException("Unable to save invoice", x);
+			throw new ServiceException(Messages.getString("InvoiceOperations.12"), x); //$NON-NLS-1$
 		} catch (IllegalArgumentException x) {
 			throw new ValidationException(
-					"Illegal argument when saving invoice", x);
+					Messages.getString("InvoiceOperations.13"), x); //$NON-NLS-1$
 		} catch (TransactionRequiredException x) {
-			throw new ServiceException("No transaction when saving invoice", x);
+			throw new ServiceException(Messages.getString("InvoiceOperations.14"), x); //$NON-NLS-1$
 		} catch (RollbackException x) {
 			throw new ServiceException(
-					"Unable to rollback invoice save transaction", x);
+					Messages.getString("InvoiceOperations.15"), x); //$NON-NLS-1$
 		}
 	}
 
@@ -209,16 +209,16 @@ public class InvoiceOperations {
 			transaction.commit();
 			return mergedLineItem;
 		} catch (IllegalStateException x) {
-			throw new ServiceException("Unable to save invoice line item", x);
+			throw new ServiceException(Messages.getString("InvoiceOperations.16"), x); //$NON-NLS-1$
 		} catch (IllegalArgumentException x) {
 			throw new ValidationException(
-					"Illegal argument when saving invoice line item", x);
+					Messages.getString("InvoiceOperations.17"), x); //$NON-NLS-1$
 		} catch (TransactionRequiredException x) {
 			throw new ServiceException(
-					"No transaction when saving invoice line item", x);
+					Messages.getString("InvoiceOperations.18"), x); //$NON-NLS-1$
 		} catch (RollbackException x) {
 			throw new ServiceException(
-					"Unable to rollback invoice line item save transaction", x);
+					Messages.getString("InvoiceOperations.19"), x); //$NON-NLS-1$
 		}
 	}
 
@@ -264,7 +264,7 @@ public class InvoiceOperations {
 	// Finds specified invoice by using CriteriaQuery.
 	public static List<Invoice> findByCriteriaQuery(int id) {
 		EntityManagerFactory entityFactory = Persistence
-				.createEntityManagerFactory("persistInvoice");
+				.createEntityManagerFactory("persistInvoice"); //$NON-NLS-1$
 		EntityManager manager = entityFactory.createEntityManager();
 
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
@@ -272,7 +272,7 @@ public class InvoiceOperations {
 		Root<Invoice> from = criteria.from(Invoice.class);
 		CriteriaQuery<Invoice> select = criteria.select(from);
 
-		Expression<String> field = from.get("invoiceID");
+		Expression<String> field = from.get("invoiceID"); //$NON-NLS-1$
 		Predicate predicate = builder.equal(field, id);
 		criteria.where(predicate);
 
@@ -288,7 +288,7 @@ public class InvoiceOperations {
 	public static Invoice findInvoiceDep(int id) {
 		try {
 			EntityManagerFactory entityFactory = Persistence
-					.createEntityManagerFactory("persistInvoice");
+					.createEntityManagerFactory("persistInvoice"); //$NON-NLS-1$
 			EntityManager manager = entityFactory.createEntityManager();
 			Invoice invoice = manager.find(Invoice.class, id);
 			manager.close();
@@ -304,12 +304,12 @@ public class InvoiceOperations {
 	// Finds specified invoice using JPQL.
 	public static Invoice findByJpql(int id) {
 		EntityManagerFactory entityFactory = Persistence
-				.createEntityManagerFactory("persistInvoice");
+				.createEntityManagerFactory("persistInvoice"); //$NON-NLS-1$
 		EntityManager manager = entityFactory.createEntityManager();
 		Invoice invoice = (Invoice) manager
 				.createQuery(
-						"SELECT i FROM Invoice i where I.invoiceID=:invoice_ID")
-				.setParameter("invoice_ID", id).getSingleResult();
+						"SELECT i FROM Invoice i where I.invoiceID=:invoice_ID") //$NON-NLS-1$
+				.setParameter("invoice_ID", id).getSingleResult(); //$NON-NLS-1$
 		manager.close();
 		entityFactory.close();
 		return invoice;
@@ -318,7 +318,7 @@ public class InvoiceOperations {
 	// Finds invoices by name, using "like" with CriteriaQuery.
 	public static List<Invoice> findByLikeName(String likeName) {
 		EntityManagerFactory entityFactory = Persistence
-				.createEntityManagerFactory("persistInvoice");
+				.createEntityManagerFactory("persistInvoice"); //$NON-NLS-1$
 		EntityManager manager = entityFactory.createEntityManager();
 
 		CriteriaBuilder builder = manager.getCriteriaBuilder();
@@ -327,7 +327,7 @@ public class InvoiceOperations {
 		CriteriaQuery<Invoice> select = criteria.select(from);
 
 		Expression<String> literal = builder.literal(likeName);
-		Expression<String> field = from.get("name");
+		Expression<String> field = from.get("name"); //$NON-NLS-1$
 		Predicate predicate = builder.like(field, literal);
 		criteria.where(predicate);
 
@@ -343,7 +343,7 @@ public class InvoiceOperations {
 	@SuppressWarnings("unchecked")
 	public static List<Invoice> findByNativeQuery(int id) {
 		EntityManagerFactory entityFactory = Persistence
-				.createEntityManagerFactory("persistInvoice");
+				.createEntityManagerFactory("persistInvoice"); //$NON-NLS-1$
 		EntityManager manager = entityFactory.createEntityManager();
 		// This is stupid -- EntityManager provides a method to specify the
 		// class of the returned values,
@@ -351,10 +351,10 @@ public class InvoiceOperations {
 		// type safety issue.
 		Query findQuery = manager
 				.createNativeQuery(
-						"SELECT i.InvoiceID, i.Name, l.LineItemID, l.Name, l.Balance "
-								+ "FROM Invoice i INNER JOIN InvoiceLineItem l "
-								+ "WHERE (l.InvoiceID = i.InvoiceID) and (i.InvoiceID = '"
-								+ id + "')", "NativeJoin");
+						"SELECT i.InvoiceID, i.Name, l.LineItemID, l.Name, l.Balance " //$NON-NLS-1$
+								+ "FROM Invoice i INNER JOIN InvoiceLineItem l " //$NON-NLS-1$
+								+ "WHERE (l.InvoiceID = i.InvoiceID) and (i.InvoiceID = '" //$NON-NLS-1$
+								+ id + "')", "NativeJoin"); //$NON-NLS-1$ //$NON-NLS-2$
 		List<Invoice> invoices = (List<Invoice>) findQuery.getResultList();
 		manager.close();
 		entityFactory.close();
@@ -364,10 +364,10 @@ public class InvoiceOperations {
 	// Finds invoice by using a named query to call a stored procedure
 	public static Invoice findByStoredProcedure(int id) {
 		EntityManagerFactory entityFactory = Persistence
-				.createEntityManagerFactory("persistInvoice");
+				.createEntityManagerFactory("persistInvoice"); //$NON-NLS-1$
 		EntityManager manager = entityFactory.createEntityManager();
-		Query findQuery = manager.createNamedQuery("nativeSP").setParameter(
-				"targetID", id);
+		Query findQuery = manager.createNamedQuery("nativeSP").setParameter( //$NON-NLS-1$
+				"targetID", id); //$NON-NLS-1$
 		Invoice invoice = (Invoice) findQuery.getSingleResult();
 		manager.close();
 		entityFactory.close();
