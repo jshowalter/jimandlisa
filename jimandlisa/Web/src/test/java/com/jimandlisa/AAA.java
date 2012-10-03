@@ -6,7 +6,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 
-import javax.xml.bind.*;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -14,6 +16,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
 
 import com.google.gson.Gson;
 
@@ -32,6 +35,8 @@ public class AAA {
 	 */
 	public static void main(String[] args) {
 
+		Logger logger = Logger.getLogger(AAA.class.getName());
+		logger.info("hi Jim");
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpGet getRequest = new HttpGet("http://localhost:8080/WebTest/rest/v1/invoice/27");
 

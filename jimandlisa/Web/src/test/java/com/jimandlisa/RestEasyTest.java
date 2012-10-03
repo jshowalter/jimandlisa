@@ -26,7 +26,6 @@ public final class RestEasyTest {
 	@Test
 	public void ValidationExceptionXMLMapper() {
 		HttpServletRequest request = new MockUp<HttpServletRequest>() {
-			@SuppressWarnings("unused")
 			@Mock
 			String getHeader(String name) {
 				return MediaType.APPLICATION_XML;
@@ -34,7 +33,6 @@ public final class RestEasyTest {
 		}.getMockInstance();
 
 		HttpHeaders headers = new MockUp<HttpHeaders>() {
-			@SuppressWarnings("unused")
 			@Mock
 			MediaType getMediaType() {
 				return MediaType.APPLICATION_JSON_TYPE;
@@ -57,7 +55,6 @@ public final class RestEasyTest {
 	@Test
 	public void ValidationExceptionJSONMapper() {
 		HttpServletRequest request = new MockUp<HttpServletRequest>() {
-			@SuppressWarnings("unused")
 			@Mock
 			String getHeader(String name) {
 				return MediaType.APPLICATION_JSON;
@@ -65,7 +62,6 @@ public final class RestEasyTest {
 		}.getMockInstance();
 
 		HttpHeaders headers = new MockUp<HttpHeaders>() {
-			@SuppressWarnings("unused")
 			@Mock
 			MediaType getMediaType() {
 				return MediaType.APPLICATION_XML_TYPE;
@@ -88,7 +84,6 @@ public final class RestEasyTest {
 	@Test
 	public void ValidationExceptionOtherMapper() {
 		HttpServletRequest request = new MockUp<HttpServletRequest>() {
-			@SuppressWarnings("unused")
 			@Mock
 			String getHeader(String name) {
 				return MediaType.APPLICATION_SVG_XML;
@@ -96,7 +91,6 @@ public final class RestEasyTest {
 		}.getMockInstance();
 
 		HttpHeaders headers = new MockUp<HttpHeaders>() {
-			@SuppressWarnings("unused")
 			@Mock
 			MediaType getMediaType() {
 				return MediaType.APPLICATION_JSON_TYPE;
@@ -119,7 +113,6 @@ public final class RestEasyTest {
 	@Test
 	public void ValidationExceptionDefaultMapper() {
 		HttpServletRequest request = new MockUp<HttpServletRequest>() {
-			@SuppressWarnings("unused")
 			@Mock
 			String getHeader(String name) {
 				return MediaType.APPLICATION_SVG_XML;
@@ -127,7 +120,6 @@ public final class RestEasyTest {
 		}.getMockInstance();
 
 		HttpHeaders headers = new MockUp<HttpHeaders>() {
-			@SuppressWarnings("unused")
 			@Mock
 			MediaType getMediaType() {
 				return null;
