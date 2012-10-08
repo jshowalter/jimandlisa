@@ -3,7 +3,8 @@ package com.jimandlisa;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-//import java.net.URISyntaxException;
+import java.rmi.AccessException;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.HttpHeaders;
@@ -14,12 +15,6 @@ import mockit.Deencapsulation;
 import mockit.Mock;
 import mockit.MockUp;
 
-//import org.jboss.resteasy.core.Dispatcher;
-//import org.jboss.resteasy.mock.MockDispatcherFactory;
-//import org.jboss.resteasy.mock.MockHttpRequest;
-//import org.jboss.resteasy.mock.MockHttpResponse;
-////import org.jboss.seam.resteasy.testfwk.MockHttpServletRequest;
-//import org.jboss.resteasy.plugins.server.resourcefactory.POJOResourceFactory;
 import org.junit.Test;
 
 public final class RestEasyTest {
@@ -139,26 +134,58 @@ public final class RestEasyTest {
 		}
 	}
 
-//	@Test
-//	public void ValidationExceptionMapper() {
-//		try {
-//			POJOResourceFactory factory = new POJOResourceFactory(InvoiceService.class);
-//			Dispatcher dispatcher = MockDispatcherFactory.createDispatcher();
-//			dispatcher.getRegistry().addResourceFactory(factory);
-//			dispatcher.getProviderFactory().addExceptionMapper(ValidationExceptionMapper.class);
-//
-//			try {
-//				MockHttpRequest request = MockHttpRequest.get("/rest/v1/invoice/abc");
-//				MockHttpResponse response = new MockHttpResponse();			
-//				dispatcher.invoke(request, response);
-//				System.out.println(response.getStatus());
-//				System.out.println(response.getContentAsString());
-//				assertEquals(400, response.getStatus());
-//			} catch (URISyntaxException e) {
-//				e.printStackTrace();
-//			}
-//		} catch (Exception x) {
-//			x.printStackTrace();
-//		}
-//	}
+	@Test
+	public void ThrowableExceptionXMLMapper() {
+		HttpServletRequest request = new MockUp<HttpServletRequest>() {
+			@Mock
+			String getHeader(String name) {
+				return MediaType.APPLICATION_XML;
+			}
+		}.getMockInstance();
+
+		HttpHeaders headers = new MockUp<HttpHeaders>() {
+			@Mock
+			MediaType getMediaType() {
+				return MediaType.APPLICATION_JSON_TYPE;
+			}
+		}.getMockInstance();
+
+		ResourceBundle.clearCache();
+
+		try {
+			AccessException exception = new AccessException("test exception", new IllegalArgumentException("blah"));
+			ThrowableMapper mapper = new ThrowableMapper();
+			Deencapsulation.setField(ValidationExceptionMapper.class, "request", request);
+			Deencapsulation.setField(ValidationExceptionMapper.class, "headers", headers);
+			Response response = mapper.toResponse(exception);
+			assertNotNull(response);
+			int status = response.getStatus();
+			assertEquals(500, status);
+		} catch (Exception x) {
+			x.printStackTrace();
+		}
+	}
+
+	// @Test
+	// public void ValidationExceptionMapper() {
+	// try {
+	// POJOResourceFactory factory = new POJOResourceFactory(InvoiceService.class);
+	// Dispatcher dispatcher = MockDispatcherFactory.createDispatcher();
+	// dispatcher.getRegistry().addResourceFactory(factory);
+	// dispatcher.getProviderFactory().addExceptionMapper(ValidationExceptionMapper.class);
+	//
+	// try {
+	// MockHttpRequest request = MockHttpRequest.get("/rest/v1/invoice/abc");
+	// MockHttpResponse response = new MockHttpResponse();
+	// dispatcher.invoke(request, response);
+	// System.out.println(response.getStatus());
+	// System.out.println(response.getContentAsString());
+	// assertEquals(400, response.getStatus());
+	// } catch (URISyntaxException e) {
+	// e.printStackTrace();
+	// }
+	// } catch (Exception x) {
+	// x.printStackTrace();
+	// }
+	// }
 }
