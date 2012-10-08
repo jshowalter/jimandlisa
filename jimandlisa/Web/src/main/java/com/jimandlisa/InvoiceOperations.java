@@ -63,8 +63,7 @@ public class InvoiceOperations {
 	 * @throws ServiceException
 	 * @throws ValidationException
 	 */
-	public boolean deleteInvoice(int invoiceId) throws ValidationException,
-			ServiceException {
+	public boolean deleteInvoice(int invoiceId) throws ServiceException {
 		Invoice invoice = findInvoice(invoiceId);
 		boolean wasDeleted = false;
 
